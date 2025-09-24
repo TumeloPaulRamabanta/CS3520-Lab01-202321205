@@ -1,7 +1,7 @@
 .data
-	invalid: .asciz "Invalid input day of the week, try again."
+	invalid: .asciz "Invalid input day, try again."
 	prompt: .asciz "Input day of the week(1-7): "
-	monday: .asciz "Manta"
+	monday: .asciz "Mantaha"
 	tuesday: .asciz "Labobeli"
 	wednesday: .asciz "Laboraro"
 	thursday: .asciz "Labone"
@@ -19,27 +19,22 @@
 .text
 .globl _start
 _start:
-	# Preset range max value
 	li t1, 7
 	
-	# Print prompt
 	la a0, prompt
 	li a7, 4
 	ecall
 	
-	# Get input
-	li a0, 0	# To avoid issues
+	li a0, 0	
 	li a7, 5
 	ecall
 	
-	# Move Input
 	mv t0, a0
+
+	blez t0, Invalid	
+	bgt t0, t1, Invalid	
 	
-	# Input validation
-	blez t0, Invalid	# From 1
-	bgt t0, t1, Invalid	# Upto &
-	
-	addi t0, t0, -1	# Positioning starts from zero so we gave to shift one position over
+	addi t0, t0, -1	
 	
 	slli t1, t0, 2
 	la t2, JumpTable
@@ -76,7 +71,7 @@ Print:
 	ecall
 	j Exit
 Invalid:
-	# Print Invalid prompt
+	
 	la a0, invalid
 	li a7, 4
 	ecall
